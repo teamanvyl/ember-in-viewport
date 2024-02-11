@@ -175,12 +175,25 @@ export default class InViewport extends Service {
         ? scrollableArea
         : undefined;
 
+    function doThatThang(value) {
+      return typeof value === 'string' && value.includes('%')
+        ? value
+        : `${value ?? 0}px`;
+    }
+
+    const top = doThatThang(viewportTolerance.top);
+
+    const right = doThatThang(viewportTolerance.right);
+
+    const bottom = doThatThang(viewportTolerance.bottom);
+
+    const left = doThatThang(viewportTolerance.left);
+
     // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
     // IntersectionObserver takes either a Document Element or null for `root`
-    const { top = 0, left = 0, bottom = 0, right = 0 } = viewportTolerance;
     return {
       root: domScrollableArea,
-      rootMargin: `${top}px ${right}px ${bottom}px ${left}px`,
+      rootMargin: `${top} ${right} ${bottom} ${left}`,
       threshold: intersectionThreshold,
     };
   }
